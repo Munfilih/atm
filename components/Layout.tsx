@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
-import { PlusCircle, Settings, CreditCard, LogOut, Building2, Wifi, WifiOff, RefreshCw, Menu, X, Download } from 'lucide-react';
+import { PlusCircle, Settings, CreditCard, LogOut, Building2, Wifi, WifiOff, RefreshCw, Menu, X, Download, FileText } from 'lucide-react';
 import { getRecords, getMachines } from '../services/storageService';
 import { auth } from '../services/firebase';
 import { signOut } from 'firebase/auth';
@@ -193,6 +193,10 @@ export const Layout: React.FC = () => {
           <NavLink to="/business" className={navClass} onClick={closeSidebar}>
             <Building2 className="w-5 h-5 mr-3" />
             <span className="font-medium">My Business</span>
+          </NavLink>
+          <NavLink to="/statement" className={navClass} onClick={closeSidebar}>
+            <FileText className="w-5 h-5 mr-3" />
+            <span className="font-medium">Statement</span>
           </NavLink>
 
 

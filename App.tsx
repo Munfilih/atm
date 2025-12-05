@@ -9,6 +9,7 @@ import { Loader2 } from 'lucide-react';
 const QuickEntry = React.lazy(() => import('./components/QuickEntry').then(m => ({ default: m.QuickEntry })));
 const MachineSettings = React.lazy(() => import('./components/MachineSettings').then(m => ({ default: m.MachineSettings })));
 const Business = React.lazy(() => import('./components/Business').then(m => ({ default: m.Business })));
+const Statement = React.lazy(() => import('./components/Statement').then(m => ({ default: m.Statement })));
 const Auth = React.lazy(() => import('./components/Auth').then(m => ({ default: m.Auth })));
 
 const LoadingSpinner = () => (
@@ -38,6 +39,7 @@ const App: React.FC = () => {
               <Route path="entry" element={<QuickEntry />} />
               <Route path="settings" element={<MachineSettings />} />
               <Route path="business" element={<Business />} />
+              <Route path="statement" element={<Statement />} />
 
             </Route>
           </Routes>
