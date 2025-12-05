@@ -114,9 +114,54 @@ export const Dashboard: React.FC = () => {
 
   return (
     <div className="space-y-8 animate-fade-in">
-
-
-
+      {/* Balance Cards */}
+      <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
+        <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-xl border border-blue-200">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-blue-600 text-sm font-medium">Opening Balance</p>
+              <p className="text-2xl font-bold text-blue-900">₹{totals.opening.toFixed(2)}</p>
+            </div>
+            <TrendingUp className="w-8 h-8 text-blue-600" />
+          </div>
+        </div>
+        <div className="bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-xl border border-green-200">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-green-600 text-sm font-medium">Machine Sales</p>
+              <p className="text-2xl font-bold text-green-900">₹{totals.sales.toFixed(2)}</p>
+            </div>
+            <CheckCircle className="w-8 h-8 text-green-600" />
+          </div>
+        </div>
+        <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-4 rounded-xl border border-purple-200">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-purple-600 text-sm font-medium">Bank Credit</p>
+              <p className="text-2xl font-bold text-purple-900">₹{totals.bank.toFixed(2)}</p>
+            </div>
+            <Download className="w-8 h-8 text-purple-600" />
+          </div>
+        </div>
+        <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-4 rounded-xl border border-orange-200">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-orange-600 text-sm font-medium">Net Difference</p>
+              <p className={`text-2xl font-bold ${totals.diff >= 0 ? 'text-green-900' : 'text-red-900'}`}>₹{totals.diff.toFixed(2)}</p>
+            </div>
+            {totals.diff >= 0 ? <CheckCircle className="w-8 h-8 text-green-600" /> : <AlertTriangle className="w-8 h-8 text-red-600" />}
+          </div>
+        </div>
+        <div className="bg-gradient-to-br from-slate-50 to-slate-100 p-4 rounded-xl border border-slate-200">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-slate-600 text-sm font-medium">Closing Balance</p>
+              <p className="text-2xl font-bold text-slate-900">₹{totals.closing.toFixed(2)}</p>
+            </div>
+            <TrendingUp className="w-8 h-8 text-slate-600" />
+          </div>
+        </div>
+      </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
