@@ -67,26 +67,27 @@ export const Statement: React.FC = () => {
 
     try {
       const canvas = await html2canvas(printRef.current, {
-        scale: 2,
+        scale: 3,
         useCORS: true,
-        allowTaint: true
+        allowTaint: true,
+        backgroundColor: '#ffffff'
       });
       
-      const imgData = canvas.toDataURL('image/png');
+      const imgData = canvas.toDataURL('image/jpeg', 1.0);
       const pdf = new jsPDF('p', 'mm', 'a4');
       const imgWidth = 210;
-      const pageHeight = 295;
+      const pageHeight = 297;
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
       let heightLeft = imgHeight;
       let position = 0;
 
-      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+      pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
       heightLeft -= pageHeight;
 
       while (heightLeft >= 0) {
         position = heightLeft - imgHeight;
         pdf.addPage();
-        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+        pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
         heightLeft -= pageHeight;
       }
 
@@ -170,27 +171,28 @@ export const Statement: React.FC = () => {
             </div>
             
             <div ref={printRef} className="mt-6 bg-white p-6 border rounded-lg" style={{ fontFamily: 'Arial, sans-serif' }}>
-              <div className="text-center mb-6">
-                <h1 className="text-2xl font-bold">ATM RECONCILIATION STATEMENT</h1>
+              <div className="flex justify-between mb-6">
+                {business && (
+                  <div className="space-y-1">
+                    <h2 className="text-lg font-bold">{business.name}</h2>
+                    {business.address && <p className="text-sm">{business.address}</p>}
+                    <div className="flex gap-4 text-sm">
+                      {business.phone && <span>Tel: {business.phone}</span>}
+                      {business.email && <span>Email: {business.email}</span>}
+                    </div>
+                    {business.taxId && <p className="text-sm">Tax ID: {business.taxId}</p>}
+                  </div>
+                )}
+                
+                <div className="text-right space-y-2">
+                  <p><strong>Machine:</strong> {machines.find(m => m.id === selectedMachine)?.name}</p>
+                  <p><strong>Bank:</strong> {machines.find(m => m.id === selectedMachine)?.bankName}</p>
+                  <p><strong>Printed:</strong> {new Date().toLocaleDateString()}</p>
+                </div>
               </div>
               
-              {business && (
-                <div className="mb-4 space-y-1">
-                  <h2 className="text-lg font-bold">{business.name}</h2>
-                  {business.address && <p className="text-sm">{business.address}</p>}
-                  <div className="flex gap-4 text-sm">
-                    {business.phone && <span>Tel: {business.phone}</span>}
-                    {business.email && <span>Email: {business.email}</span>}
-                  </div>
-                  {business.taxId && <p className="text-sm">Tax ID: {business.taxId}</p>}
-                </div>
-              )}
-              
-              <div className="mb-6 space-y-2">
-                <p><strong>Machine:</strong> {machines.find(m => m.id === selectedMachine)?.name}</p>
-                <p><strong>Bank:</strong> {machines.find(m => m.id === selectedMachine)?.bankName}</p>
-                <p><strong>Period:</strong> {new Date(startDate).toLocaleDateString()} to {new Date(endDate).toLocaleDateString()}</p>
-                <p><strong>Generated:</strong> {new Date().toLocaleDateString()}</p>
+              <div className="text-center mb-4">
+                <h1 className="text-sm font-bold">ATM RECONCILIATION STATEMENT ({new Date(startDate).toLocaleDateString()} to {new Date(endDate).toLocaleDateString()})</h1>
               </div>
               
               <table className="w-full border-collapse border border-gray-300 mb-6">
@@ -236,7 +238,7 @@ export const Statement: React.FC = () => {
                 </tbody>
               </table>
               
-              <div className="font-bold space-y-1">
+              <div className="space-y-1">
                 <p>Total Machine Sales: {records.reduce((sum, r) => sum + r.machineTotal, 0).toFixed(2)}</p>
                 <p>Total Bank Credits: {records.reduce((sum, r) => sum + r.bankCredit, 0).toFixed(2)}</p>
                 <p>Net Difference: {records.reduce((sum, r) => sum + r.difference, 0).toFixed(2)}</p>
