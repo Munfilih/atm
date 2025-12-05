@@ -62,21 +62,20 @@ export const Dashboard: React.FC = () => {
     
     // Calculate for each machine
     machines.forEach(machine => {
-      const todayRecord = todayRecords.find(r => r.machineId === machine.id);
+      // Always get opening balance from previous day's closing balance
+      const sortedPrevRecords = records
+        .filter(r => r.machineId === machine.id && r.date < today)
+        .sort((a, b) => b.date.localeCompare(a.date));
       
+      const lastRecord = sortedPrevRecords[0];
+      const openingBalance = lastRecord ? Number(lastRecord.closingBalance || 0) : 0;
+      totalOpening += openingBalance;
+      
+      // Get today's closing balance if record exists
+      const todayRecord = todayRecords.find(r => r.machineId === machine.id);
       if (todayRecord) {
-        totalOpening += Number(todayRecord.openingBalance || 0);
         totalClosing += Number(todayRecord.closingBalance || 0);
       } else {
-        // Get previous day's closing balance as opening
-        const sortedPrevRecords = records
-          .filter(r => r.machineId === machine.id && r.date < today)
-          .sort((a, b) => b.date.localeCompare(a.date));
-        
-        const lastRecord = sortedPrevRecords[0];
-        const openingBalance = lastRecord ? Number(lastRecord.closingBalance || 0) : 0;
-        
-        totalOpening += openingBalance;
         totalClosing += openingBalance; // Same as opening since no transactions
       }
     });
