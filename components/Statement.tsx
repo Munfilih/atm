@@ -19,6 +19,7 @@ export const Statement: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [business, setBusiness] = useState<any>(null);
   const [activeTab, setActiveTab] = useState<'total' | 'machine'>('total');
+  const [showNotification, setShowNotification] = useState(false);
   const printRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -92,6 +93,8 @@ export const Statement: React.FC = () => {
     setLoading(true);
     try {
       await generatePDF();
+      setShowNotification(true);
+      setTimeout(() => setShowNotification(false), 3000);
     } catch (error) {
       console.error('Error generating statement:', error);
     } finally {
@@ -150,7 +153,15 @@ export const Statement: React.FC = () => {
   }, {} as Record<string, ReconcileRecord[]>);
 
   return (
-    <div className="max-w-6xl mx-auto">
+    <div className="max-w-6xl mx-auto relative">
+      {showNotification && (
+        <div className="fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-in">
+          <div className="flex items-center gap-2">
+            <Download className="w-5 h-5" />
+            <span>PDF Statement downloaded successfully!</span>
+          </div>
+        </div>
+      )}
       <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
         <div className="flex items-center gap-3 mb-6">
           <div className="bg-blue-600 p-2 rounded-lg">
