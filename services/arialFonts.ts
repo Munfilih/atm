@@ -29,10 +29,10 @@ export const initializeArialFonts = async (doc: jsPDF): Promise<boolean> => {
     try {
         // Load fonts if not already loaded
         if (!arialNormalBase64) {
-            arialNormalBase64 = await loadFontFile('/Fonts/ArialMT_0.ttf');
+            arialNormalBase64 = await loadFontFile('./Fonts/ArialMT_0.ttf');
         }
         if (!arialBoldBase64) {
-            arialBoldBase64 = await loadFontFile('/Fonts/arialbd.ttf');
+            arialBoldBase64 = await loadFontFile('./Fonts/arialbd.ttf');
         }
 
         if (arialNormalBase64 && arialBoldBase64) {
