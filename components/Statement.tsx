@@ -243,7 +243,7 @@ export const Statement: React.FC = () => {
         const tableWidth = pageWidth - 2 * margin;
         const colWidths = activeTab === 'machine'
           ? [
-            tableWidth * 0.20, // Date 20% (bigger for machine-wise)
+            tableWidth * 0.20, // Date 20%
             tableWidth * 0.16, // Opening 16%
             tableWidth * 0.16, // Slip Total 16%
             tableWidth * 0.16, // Statement 16%
@@ -252,12 +252,12 @@ export const Statement: React.FC = () => {
           ]
           : [
             tableWidth * 0.12, // Date 12%
-            tableWidth * 0.15, // Machine 15%
-            tableWidth * 0.12, // Opening 12%
-            tableWidth * 0.15, // Slip Total 15%
-            tableWidth * 0.15, // Statement 15%
-            tableWidth * 0.16, // Difference 16%
-            tableWidth * 0.15  // Closing 15%
+            tableWidth * 0.22, // Machine 22% (increased)
+            tableWidth * 0.132, // Opening 13.2%
+            tableWidth * 0.132, // Slip Total 13.2%
+            tableWidth * 0.132, // Statement 13.2%
+            tableWidth * 0.132, // Difference 13.2%
+            tableWidth * 0.132  // Closing 13.2%
           ];
 
         // Single table header - NO BORDERS
@@ -277,6 +277,10 @@ export const Statement: React.FC = () => {
           xPos += colWidths[i];
         });
 
+        // Reset font size for table content after header
+        pdf.setFontSize(9);
+        pdf.setFont('helvetica', 'normal');
+        
         return { nextY: startY + 10, colWidths, tableWidth };
       };
 
@@ -293,8 +297,8 @@ export const Statement: React.FC = () => {
       const { colWidths, tableWidth } = tableResult;
 
       pdf.setTextColor(0, 0, 0);
-      pdf.setFont('Arial', 'normal');
-      pdf.setFontSize(8);
+      pdf.setFont('helvetica', 'normal');
+      pdf.setFontSize(9);
 
       // Table rows
       const dates = [...new Set(records.map(r => r.date))].sort();
@@ -310,6 +314,9 @@ export const Statement: React.FC = () => {
             yPos = drawPageHeader(false, machineForHeader);
             const newTableResult = drawTableHeader(yPos);
             yPos = newTableResult.nextY;
+            // Ensure font size is reset for table content
+            pdf.setFontSize(9);
+            pdf.setFont('helvetica', 'normal');
           }
 
           const machine = machines.find(m => m.id === record.machineid);
@@ -406,6 +413,9 @@ export const Statement: React.FC = () => {
               yPos = drawPageHeader(false, machineForHeader);
               const newTableResult = drawTableHeader(yPos);
               yPos = newTableResult.nextY;
+              // Ensure font size is reset for table content
+              pdf.setFontSize(9);
+              pdf.setFont('helvetica', 'normal');
             }
 
             // Format date as multiline: "Mon, 25" and "Dec 2025"
